@@ -2,10 +2,8 @@ import string
 import random
 
 
-def main() -> None:
-    input_text: str = input("text to encode:\n ")
+def encode(input_text: str) -> str:
     encoded_text: list = []
-
     for x in range(len(input_text)):
         """3rd letter in each word that has over 3 letters"""
         current_word_len: int = random.randint(1, 10)
@@ -18,8 +16,13 @@ def main() -> None:
                 encoded_text.append("".join(current_word))
                 break
             encoded_text.append("".join(current_word))
-    output = " ".join(encoded_text)
-    print(f"encoded text:\n {output}")
+    return " ".join(encoded_text)
+
+
+def main() -> None:
+    input_text: str = input("text to encode:\n ")
+    output_text: str = encode(input_text)
+    print(f"encoded text:\n {output_text}")
 
 
 if __name__ == "__main__":
