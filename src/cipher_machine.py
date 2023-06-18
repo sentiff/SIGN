@@ -42,20 +42,20 @@ class CipherMachine:
             number_of_letter
         )
 
-    # TODO: fix
-    def __sentence_generator(self, encoded_text, letter):
-        encoded_len = len(encoded_text)
-        if encoded_len < letter.number:
+    def __sentence_generator(self, encoded_text, letter) -> list:
+        encoded_len: int = len(encoded_text)
+        sentence_counter: int = self.__calculate_sentence_count(encoded_len, letter.number)
+        output_text = []
+        for sentence_array in np.array_split(encoded_text, sentence_counter):
+            sentence_array[0] = np.char.capitalize(sentence_array[0])
+            sentence_array[len(sentence_array) - 1] = sentence_array[len(sentence_array) - 1] + "."
+            sentence: str = " ".join(sentence_array)
+            output_text.append(sentence)
+        return output_text
+
+    def __calculate_sentence_count(self, encoded_len: int, letter_number: int) -> int:
+        if encoded_len < letter_number:
             sentence_counter = round((encoded_len / 4))
         else:
-            sentence_counter: int = len(encoded_text) % letter.number
-        if sentence_counter == 0:
-            sentence_counter = 1
-        words_per_senetence = np.array_split(encoded_text, sentence_counter)
-        output_text = []
-        for sentence in words_per_senetence:
-            sentence[0] = np.char.capitalize(sentence[0])
-            sentence[len(sentence) - 1] = sentence[len(sentence) - 1] + "."
-            full_sentence = " ".join(sentence)
-            output_text.append(full_sentence)
-        return output_text
+            sentence_counter: int = encoded_len % letter_number
+        return sentence_counter if sentence_counter != 0 else 1
