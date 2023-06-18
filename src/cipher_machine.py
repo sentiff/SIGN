@@ -1,6 +1,8 @@
 import string
 import random
 
+import numpy as np
+
 from letter import Letter
 
 
@@ -24,8 +26,8 @@ class CipherMachine:
                     encoded_text.append("".join(current_word))
                     break
                 encoded_text.append("".join(current_word))
-        print(encoded_text)
-        return " ".join(encoded_text)
+        sentences = self.__sentence_generator(encoded_text, letter)
+        return " ".join(sentences)
 
     def __seed_generator(self) -> str:
         return "".join(random.choices(string.ascii_letters, k=10))
@@ -47,14 +49,13 @@ class CipherMachine:
             sentence_counter = round((encoded_len / 4))
         else:
             sentence_counter: int = len(encoded_text) % letter.number
-        encoded_text.insert(sentence_counter, ".")
-        for x in range(len(encoded_text)):
-            if x == 0 or encoded_text[x - 1] == ".":
-                print("encoded_text[x]")
-                print(encoded_text[x])
-                new_one = (encoded_text[x]).replace(encoded_text[0], encoded_text[0].upper(), 1)
-                print("new_one")
-                print(new_one)
-                encoded_text[x] = new_one
-        encoded_text.append(".")
-        return encoded_text
+        if sentence_counter == 0:
+            sentence_counter = 1
+        words_per_senetence = np.array_split(encoded_text, sentence_counter)
+        output_text = []
+        for sentence in words_per_senetence:
+            sentence[0] = np.char.capitalize(sentence[0])
+            sentence[len(sentence) - 1] = sentence[len(sentence) - 1] + "."
+            full_sentence = " ".join(sentence)
+            output_text.append(full_sentence)
+        return output_text
