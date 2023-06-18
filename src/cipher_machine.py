@@ -10,6 +10,11 @@ class CipherMachine:
     def __init__(self):
         self.__seed: str = self.__seed_generator()
 
+    #TODO:
+    # - additional letters
+    # - missing dot
+    # - double space
+    # - encode information about space
     def encode(self, input_text: str) -> str:
         letter: Letter = self.__create_letter()
         encoded_text: list = []
@@ -29,8 +34,19 @@ class CipherMachine:
         sentences: list = self.__sentence_generator(encoded_text, letter)
         return " ".join(sentences)
 
-    def decode(self) -> str:
-        pass
+    def decode(self, input_text: str) -> str:
+        words: list = input_text.split(" ")
+        meaningful_words = []
+        for word in words:
+            if self.__has_code_letter(word):
+                meaningful_words.append(word)
+        decoded_text = []
+        for word in meaningful_words:
+            decoded_text.append(word[2])
+        return "".join(decoded_text)
+
+    def __has_code_letter(self, word: str) -> bool:
+        return True if len(word.replace(".", "")) >= 3 else False
 
     def __seed_generator(self) -> str:
         return "".join(random.choices(string.ascii_letters, k=10))
