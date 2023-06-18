@@ -36,25 +36,18 @@ class CipherMachine:
 
     def decode(self, input_text: str) -> str:
         words: list = input_text.split(" ")
-        code_words: list = self.__parse_code_words(words)
-        decoded_text: list = self.__parse_code(code_words)
+        decoded_text: list = self.__parse_code_words(words)
         return "".join(decoded_text)
 
     def __parse_code_words(self, words: list) -> list:
         code_words: list = []
         for word in words:
             if self.__has_code_letter(word):
-                code_words.append(word)
+                code_words.append(word[2])
         return code_words
 
     def __has_code_letter(self, word: str) -> bool:
         return True if len(word.replace(".", "")) >= 3 else False
-
-    def __parse_code(self, words: list) -> list:
-        code: list = []
-        for word in words:
-            code.append(word[2])
-        return code
 
     def __seed_generator(self) -> str:
         return "".join(random.choices(string.ascii_letters, k=10))
