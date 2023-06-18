@@ -29,6 +29,9 @@ class CipherMachine:
         sentences: list = self.__sentence_generator(encoded_text, letter)
         return " ".join(sentences)
 
+    def decode(self) -> str:
+        pass
+
     def __seed_generator(self) -> str:
         return "".join(random.choices(string.ascii_letters, k=10))
 
