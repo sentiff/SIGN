@@ -26,7 +26,7 @@ class CipherMachine:
                     encoded_text.append("".join(current_word))
                     break
                 encoded_text.append("".join(current_word))
-        sentences = self.__sentence_generator(encoded_text, letter)
+        sentences: list = self.__sentence_generator(encoded_text, letter)
         return " ".join(sentences)
 
     def __seed_generator(self) -> str:
