@@ -14,8 +14,7 @@ class CipherMachine:
     # - additional letters
     # - missing dot
     # - double space
-    # - encode information about space
-    def encode(self, input_text: str) -> str:
+    def encode(self, input_text: str) -> (str, str):
         letter: Letter = self.__create_letter()
         encoded_text: list = []
         for x in range(len(input_text)):
@@ -27,15 +26,18 @@ class CipherMachine:
                 for i in range(current_word_len):
                     current_word.append(random.choice(string.ascii_letters).lower())
                 if len(current_word) > 2:
-                    current_word[2] = input_text[x]
+                    if input_text[x] == letter.value:
+                        current_word[2] = chr(ord(input_text[x]) + 1)
+                    else:
+                        current_word[2] = input_text[x] if input_text[x] != " " else letter.value
                     encoded_text.append("".join(current_word))
                     break
                 encoded_text.append("".join(current_word))
         sentences: list = self.__sentence_generator(encoded_text, letter)
-        return " ".join(sentences)
+        return " ".join(sentences), letter.value
 
-    def decode(self, input_text: str) -> str:
-        words: list = input_text.split(" ")
+    def decode(self, input_text: tuple[str, str]) -> str:
+        words: list = input_text[0].split(" ")
         decoded_text: list = self.__parse_code_words(words)
         return "".join(decoded_text)
 
